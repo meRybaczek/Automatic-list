@@ -1,22 +1,19 @@
 package project.backend;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
+    @Autowired
     private UserService userService;
-    @PostMapping("/")
-    public Employee addUser(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String rfid,
-                            @RequestParam boolean hasPermission){
-        return userService.addUser(firstName, lastName, rfid, hasPermission);
+    @PostMapping("/add")
+    public Employee addUser(@RequestBody Employee employee){
+        return userService.addUser(employee);
     }
     @GetMapping("/id")
     public Employee getUserById(@RequestParam long id){

@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
-    public Employee addUser(String name, String surname, String rfid, boolean hasPermission) {
-        Employee employee = new project.backend.Employee(name, surname, rfid, hasPermission);
+    public Employee addUser(Employee employee) {
 
         return userRepository.save(employee);
     }
