@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
     @PostMapping("/add")
     public Employee addUser(@RequestBody Employee employee){
         return userService.addUser(employee);
