@@ -1,9 +1,9 @@
+/*
 package project;
 
 import com.fazecast.jSerialComm.SerialPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import project.PoC.AuthorizingServicePoC;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,12 +14,12 @@ public class PortConnection {
     private static final int PORT_NO = 1;
     private final StringBuilder measurement;
     private final SerialPort comPort;
-    private final AuthorizingServicePoC authorizingServicePoC;
+    private final project.backend.UserService userService;
 
-    public PortConnection(StringBuilder measurements, SerialPort inputPort, AuthorizingServicePoC authorizingServicePoC) {
+    public PortConnection(StringBuilder measurements, SerialPort inputPort, project.backend.UserService userService) {
         this.comPort = inputPort;
         this.measurement = measurements;
-        this.authorizingServicePoC = authorizingServicePoC;
+        this.userService = userService;
     }
 
     public StringBuilder getAuthorization() {
@@ -47,7 +47,7 @@ public class PortConnection {
 
 
 
-        return new StringBuilder(authorizingServicePoC.authorize(measurement.toString())); // pokemon, zmienie w next commicie kiedyśtam xd
+        return new StringBuilder(userService.authorize(measurement.toString())); // pokemon, zmienie w next commicie kiedyśtam xd
     }
 
     private int getBytesPerPacket() throws InterruptedException {
@@ -56,17 +56,17 @@ public class PortConnection {
     }
 
     //dla testow
-    public static void main(String[] args) {
-
-        for (int i = 0; i < 20; i++) {
-            StringBuilder stringBuilder = new StringBuilder();
-            SerialPort comPort = SerialPort.getCommPorts()[PORT_NO];
-            comPort.openPort();
-//            PortConnection connection = new PortConnection(stringBuilder, comPort, new AuthorizingServicePoC(n));
-//            StringBuilder measurement = connection.getAuthorization();
-//            System.out.println(measurement);
-            comPort.closePort();
-        }
-
-    }
-}
+//    public static void main(String[] args) {
+//
+//        for (int i = 0; i < 20; i++) {
+//            StringBuilder stringBuilder = new StringBuilder();
+//            SerialPort comPort = SerialPort.getCommPorts()[PORT_NO];
+//            comPort.openPort();
+////            PortConnection connection = new PortConnection(stringBuilder, comPort, new AuthorizingServicePoC(n));
+////            StringBuilder measurement = connection.getAuthorization();
+////            System.out.println(measurement);
+//            comPort.closePort();
+//        }
+//
+//    }
+}*/
