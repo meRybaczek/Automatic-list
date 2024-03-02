@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="UTF-8">
+<head>
+    <!-- Add necessary CSS or Bootstrap styles -->
+    <title></title></head>
+<body>
+<h1>Create User</h1>
+<form th:action="@{/users}" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+    <label for="surname">Surname:</label>
+    <input type="text" id="surname" name="surname" required>
+    <br>
+    <label for="rfid">RFID:</label>
+    <input type="text" id="rfid" name="rfid" required>
+    <br>
+    <label for="access">Access:</label>
+    <input type="checkbox" id="access" name="access">
+    <br>
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>
