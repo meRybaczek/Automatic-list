@@ -14,12 +14,12 @@ public class PortConnection {
     private static final int PORT_NO = 1;
     private final StringBuilder measurement;
     private final SerialPort comPort;
-    private final project.backend.UserService userService;
+    private final project.backend.EmployeeService employeeService;
 
-    public PortConnection(StringBuilder measurements, SerialPort inputPort, project.backend.UserService userService) {
+    public PortConnection(StringBuilder measurements, SerialPort inputPort, project.backend.EmployeeService employeeService) {
         this.comPort = inputPort;
         this.measurement = measurements;
-        this.userService = userService;
+        this.employeeService = employeeService;
     }
 
     public StringBuilder getAuthorization() {
@@ -47,7 +47,7 @@ public class PortConnection {
 
 
 
-        return new StringBuilder(userService.authorize(measurement.toString())); // pokemon, zmienie w next commicie kiedyśtam xd
+        return new StringBuilder(employeeService.authorize(measurement.toString())); // pokemon, zmienie w next commicie kiedyśtam xd
     }
 
     private int getBytesPerPacket() throws InterruptedException {
