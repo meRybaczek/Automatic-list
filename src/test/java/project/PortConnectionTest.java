@@ -13,7 +13,7 @@
 //import static org.mockito.Mockito.when;
 //
 //class PortConnectionTest {
-//    private final project.backend.UserService userService = mock(project.backend.UserService.class);
+//    private final project.backend.EmployeeService employeeService = mock(project.backend.EmployeeService.class);
 //    private PortConnection portConnection;
 //    private SerialPort mockedComPort;
 //    private StringBuilder measurements;
@@ -22,7 +22,7 @@
 //    void setUp() {
 //        measurements = new StringBuilder();
 //        mockedComPort = Mockito.mock(SerialPort.class);
-//        portConnection = new PortConnection(measurements, mockedComPort, userService);
+//        portConnection = new PortConnection(measurements, mockedComPort, employeeService);
 //    }
 //
 //    @Test

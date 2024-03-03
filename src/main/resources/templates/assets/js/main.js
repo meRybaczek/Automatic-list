@@ -19,7 +19,7 @@ function handleErrorResponse(error) {
 }
 
 // Event listeners for form submissions
-document.getElementById('addUserForm').addEventListener('submit', function(event) {
+document.getElementById('addEmployeeForm').addEventListener('submit', function(event) {
     event.preventDefault();
     var formData = {
         firstName: document.getElementById('firstName').value,
@@ -46,9 +46,9 @@ document.getElementById('addUserForm').addEventListener('submit', function(event
     });
 });
 
-function getUserById() {
-    var userId = document.getElementById('id').value;
-    fetch('http://localhost:8081/id?id=' + userId)
+function getEmployeeById() {
+    var employeeId = document.getElementById('id').value;
+    fetch('http://localhost:8081/id?id=' + employeeId)
     .then(response => response.json())
     .then(data => {
         console.log(data);
@@ -60,7 +60,7 @@ function getUserById() {
     });
 }
 
-function getUserByRfid() {
+function getEmployeeByRfid() {
     var rfid = document.getElementById('rfidSearch').value;
     fetch('http://localhost:8081/rfid?rfid=' + rfid)
     .then(response => response.json())
@@ -74,7 +74,7 @@ function getUserByRfid() {
     });
 }
 
-function getUserBySurname() {
+function getEmployeeBySurname() {
     var lastName = document.getElementById('lastNameSearch').value;
     fetch('http://localhost:8081/lastName?lastName=' + lastName)
     .then(response => response.json())
@@ -88,7 +88,7 @@ function getUserBySurname() {
     });
 }
 
-function getUserByName() {
+function getEmployeeByName() {
     var firstName = document.getElementById('firstNameSearch').value;
     fetch('http://localhost:8081/firstName?firstName=' + firstName)
     .then(response => response.json())
@@ -102,15 +102,15 @@ function getUserByName() {
     });
 }
 
-function deleteUserById() {
+function deleteEmployeeById() {
     var deleteId = document.getElementById('deleteId').value;
     fetch('http://localhost:8081/?id=' + deleteId, {
         method: 'DELETE'
     })
     .then(response => {
         if (response.ok) {
-            console.log('User deleted successfully');
-            handleServerResponse('User deleted successfully');
+            console.log('Employee deleted successfully');
+            handleServerResponse('Employee deleted successfully');
         } else {
             console.error('Error:', response.statusText);
             handleErrorResponse(response.statusText);
