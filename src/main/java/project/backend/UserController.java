@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping("/add")
     public Employee addUser(@RequestBody Employee employee) {
@@ -38,8 +38,13 @@ public class UserController {
         return userService.getUserByFirstName(firstName);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUserById(@PathVariable Long id) {
-        userService.deleteById(id);
+    @PatchMapping("/deactivate")
+    public Employee deactivateUserById(@RequestParam Long id){
+        return userService.deactivateUser(id);
+    }
+
+    @PatchMapping("/activate")
+    public Employee activateUserById(@RequestParam Long id){
+        return userService.activateUser(id);
     }
 }
