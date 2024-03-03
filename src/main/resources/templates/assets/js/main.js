@@ -76,7 +76,7 @@ function getUserByRfid() {
 
 function getUserBySurname() {
     var lastName = document.getElementById('lastNameSearch').value;
-    fetch('http://localhost:8081/ser?lastName=' + lastName)
+    fetch('http://localhost:8081/lastName?lastName=' + lastName)
     .then(response => response.json())
     .then(data => {
         console.log(data);
@@ -90,7 +90,7 @@ function getUserBySurname() {
 
 function getUserByName() {
     var firstName = document.getElementById('firstNameSearch').value;
-    fetch('http://localhost:8081/name?firstName=' + firstName)
+    fetch('http://localhost:8081/firstName?firstName=' + firstName)
     .then(response => response.json())
     .then(data => {
         console.log(data);

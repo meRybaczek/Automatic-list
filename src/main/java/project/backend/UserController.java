@@ -28,12 +28,12 @@ public class UserController {
         return userService.getUserByRfid(rfid);
     }
 
-    @GetMapping("/ser")
+    @GetMapping("/lastName")
     public Employee getUserBySurname(@RequestParam String lastName) {
         return userService.getUserByLastName(lastName);
     }
 
-    @GetMapping("/name")
+    @GetMapping("/firstName")
     public Employee getUserByName(@RequestParam String firstName) {
         return userService.getUserByFirstName(firstName);
     }
