@@ -62,10 +62,10 @@ class UserControllerTest {
     @Test
     void shouldDeleteUser(){
         //when
-        userController.deleteUserById(1L);
+        userController.deactivateUserById(1L);
 
         //then
-        verify(userService).deleteById(1L);
+        verify(userService).deactivateUser(1L);
     };
 
 }

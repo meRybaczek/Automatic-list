@@ -14,7 +14,7 @@ class UserServiceTest {
     private static final String NAME = "name";
     private static final String LAST_NAME = "lastName";
     private static final String RFID = "rfid";
-    private static final boolean HAS_PERMISSION = false;
+    private static final boolean HAS_PERMISSION = true;
     private static final Employee EMPLOYEE = new Employee(NAME, LAST_NAME, RFID, HAS_PERMISSION);
     private final UserRepository userRepository = mock(UserRepository.class);
     private UserService userService = new UserService(userRepository);
@@ -100,10 +100,27 @@ class UserServiceTest {
         assertThat(receivedEmployee).isEqualTo(EMPLOYEE);
     }
     @Test
-    void shouldDeleteEmployee() {
+    void shouldDeactivateEmployee() {
+        //given
+        when(userRepository.findById(1L)).thenReturn(Optional.of(EMPLOYEE));
+        when(userRepository.save(EMPLOYEE)).thenReturn(EMPLOYEE);
+        assertThat(EMPLOYEE.isHasPermission()).isTrue();
         //when
-        userService.deleteById(99L);
+        Employee receivedEmployee = userService.deactivateUser(1L);
         //then
-        verify(userRepository).deleteById(99L);
+        assertThat(receivedEmployee.isHasPermission()).isFalse();
+    }
+
+    @Test
+    void shouldActivateEmployee() {
+        //given
+        Employee employee = new Employee(NAME, LAST_NAME, RFID, false);
+        when(userRepository.findById(1L)).thenReturn(Optional.of(employee));
+        when(userRepository.save(employee)).thenReturn(employee);
+        assertThat(employee.isHasPermission()).isFalse();
+        //when
+        Employee receivedEmployee = userService.activateUser(1L);
+        //then
+        assertThat(receivedEmployee.isHasPermission()).isTrue();
     }
 }

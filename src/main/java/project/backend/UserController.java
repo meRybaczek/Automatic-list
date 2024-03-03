@@ -31,10 +31,13 @@ public class UserController {
     public Employee getUserByName(@RequestParam String firstName){
         return userService.getUserByFirstName(firstName);
     }
-    @DeleteMapping("/")
-    public void deleteUserById(@RequestParam Long id){
-        userService.deleteById(id);
+    @PatchMapping("/deactivate")
+    public Employee deactivateUserById(@RequestParam Long id){
+        return userService.deactivateUser(id);
     }
 
-
+    @PatchMapping("/activate")
+    public Employee activateUserById(@RequestParam Long id){
+        return userService.activateUser(id);
+    }
 }

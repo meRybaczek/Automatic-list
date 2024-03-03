@@ -14,7 +14,7 @@ public class UserService {
         return userRepository.save(employee);
     }
 
-    public Employee getUser(long id){
+    public Employee getUser(Long id){
         return userRepository.findById(id).orElseThrow();
     }
 
@@ -30,7 +30,17 @@ public class UserService {
         return userRepository.findUserByRfid(rfid);
     }
 
-    public void deleteById(long id) {
-        userRepository.deleteById(id);
+    public Employee deactivateUser(Long id) {
+        Employee employee = this.getUser(id);
+
+        employee.setHasPermission(false);
+        return userRepository.save(employee);
+    }
+
+    public Employee activateUser(Long id) {
+        Employee employee = this.getUser(id);
+
+        employee.setHasPermission(true);
+        return userRepository.save(employee);
     }
 }

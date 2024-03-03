@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -21,6 +22,7 @@ public class Employee {
 
     private String rfid;
 
+    @Setter
     private boolean hasPermission;
 
     public Employee(String firstName, String lastName, String rfid, boolean hasPermission) {
