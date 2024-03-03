@@ -1,6 +1,6 @@
 Dane pracownika/ zapisywane dane z czytnika;
 - Imię, Nazwisko
-- Pesel
+- Pesel lub unikalny nr id w systemie klienta
 - Data zatrudnienia
 - Data zwolnienia
 - Id pracownika w systemie
