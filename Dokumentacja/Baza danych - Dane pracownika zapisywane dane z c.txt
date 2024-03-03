@@ -1,12 +1,15 @@
-Dane pracownika/ zapisywane dane z czytnika;
+Dane pracownika - informacje o prawach dostęp;
 - Imię, Nazwisko
 - Pesel lub unikalny nr id w systemie klienta
 - Data zatrudnienia
 - Data zwolnienia
 - Id pracownika w systemie
-- RF_id
 - aktywacji RF_id data i godzina
 - dezaktywacja RF_id  data i godzina
+- RF_id
+
+Logi dostępowe - zapisywane dane z czytnika
+- RF_id
 - blokada RF_id data i godzina
 - wyłączenie blokady RF_id data i godzina
 - id czytnika + wejście data i godzina
