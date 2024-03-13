@@ -5,6 +5,8 @@
 #include "arduino_secrets.h"
 #include <ArduinoJson.h>
 #include <WiFiS3.h>
+#include "ArduinoGraphics.h"
+#include "Arduino_LED_Matrix.h"
 
 struct ResponseData {
   const char* firstRowText;
@@ -41,6 +43,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 MFRC522 mfrc522(SS_PIN, RST_PIN);
 RTCTime currentTime;
 WiFiClient client;
+ArduinoLEDMatrix matrix;
 
 
 void setup() {
@@ -48,6 +51,7 @@ void setup() {
   Serial.println("Gate id: " + String(GATE_ID));
   lcdScreenInfo1stRow("Gate id: " + String(GATE_ID));
   lcdScreenInfo2ndRow("System logging...");
+  weclomeMatrixText();
   connectToWiFi();
   initialState();
 }
@@ -95,6 +99,7 @@ void initializeHardware() {
   SPI.begin();
   mfrc522.PCD_Init();
   RTC.begin();
+  matrix.begin();
 }
 
 void initialState() {
@@ -295,5 +300,22 @@ ResponseData parseResponse(String response) {
   }
 
   return ResponseData(firstRowText, secondRowText, greenLedOn);
+}
+
+void weclomeMatrixText(){
+  matrix.beginDraw();
+
+  matrix.stroke(0xFFFFFFFF);
+  matrix.textScrollSpeed(50);
+
+  // add the text
+  const char text[] = "Welcome to Entry Systems";
+  matrix.textFont(Font_5x7);
+  matrix.beginText(0, 1, 0xFFFFFF);
+  matrix.println(text);
+  matrix.endText(SCROLL_LEFT);
+
+  matrix.endDraw();
+
 }
 
