@@ -1,18 +1,18 @@
 #include <LiquidCrystal_I2C.h>
 #include <SPI.h>
-#include <MFRC522.h>                    //WSZYSTKO JEST ALE JEST BAŁAGAN
+#include <MFRC522.h>
 #include <RTC.h>
 #include "arduino_secrets.h"
 #include <ArduinoJson.h>
-#include "WiFiS3.h"
+#include <WiFiS3.h>
 
-struct ResponseData {   //deklaracja nowej klasy na potrzeby parsowania
+struct ResponseData {
   const char* firstRowText;
   const char* secondRowText;
   const boolean greenLedOn;
 
-  ResponseData(const char* hello, const char* info, boolean pass)
-    : firstRowText(hello), secondRowText(info), greenLedOn(pass) {}
+  ResponseData(const char* firstRow, const char* secondRow, boolean greenOn)
+    : firstRowText(firstRow), secondRowText(secondRow), greenLedOn(greenOn) {}
 };
 
 // Constants
@@ -55,12 +55,13 @@ void setup() {
 void loop() {
   printCurrentDateTime();
 
-  if (isButtonOn() && tagDetected()) {
-    processTag(GET_LAST_LOG_ENDPOINT);
-  }
+  if (isTagDetected()) {
+    if(isButtonPressed()){
+      processTag(GET_LAST_LOG_ENDPOINT);
+    }else {
+      processTag(LOGGING_ENDPOINT);
+    }
 
-  if (tagDetected()) {
-    processTag(LOGGING_ENDPOINT);
   }
 
   delay(1000);
@@ -102,11 +103,11 @@ void initialState() {
   ledsState(GREEN_LED_PIN, OFF);
 }
 
-boolean tagDetected() {
+boolean isTagDetected() {
   return mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial();
 }
 
-boolean isButtonOn(){
+boolean isButtonPressed(){
   return digitalRead(INFO_BUTTON_PIN) == HIGH;
 }
 
@@ -228,7 +229,7 @@ void printWifiStatus() {
   Serial.println(" dBm");
 }
 
-String sendRequestToServer(String cardUid, String endpointName) {        //tutaj powstawiac parametry, narazie jest na sztywno
+String sendRequestToServer(String cardUid, String endpointName) {
   String request = "GET /" + endpointName + cardUid + " HTTP/1.1";
 
   if (client.connect(SERVER, PORT_NO)) {
@@ -238,7 +239,7 @@ String sendRequestToServer(String cardUid, String endpointName) {        //tutaj
     client.println("Host: " + String(SERVER));
     client.println("Connection: close");
     client.println();
-    delay(800);                                //time to load response
+    delay(800);
 
     return readResponse();
 
@@ -259,13 +260,11 @@ String readResponse() {
 
 
 ResponseData parseResponse(String response) {
-  // Extract JSON string from the response body
   int jsonStart = response.indexOf('{');
   int jsonEnd = response.lastIndexOf('}');
   String jsonString = response.substring(jsonStart, jsonEnd + 1);
 
-  // Parse JSON and extract the value of the firstRowText and secondRowText fields
-  JsonDocument doc; // Adjust the size based on your JSON response
+  JsonDocument doc;
   DeserializationError error = deserializeJson(doc, jsonString);
 
 
@@ -292,7 +291,7 @@ ResponseData parseResponse(String response) {
   if (error) {
     Serial.print("deserializeJson() failed: ");
     Serial.println(error.c_str());
-    return ResponseData("", "", false); // Return an empty ResponseData structure
+    return ResponseData("", "", false);
   }
 
   return ResponseData(firstRowText, secondRowText, greenLedOn);
