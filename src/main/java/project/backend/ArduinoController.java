@@ -14,9 +14,10 @@ public class ArduinoController {
 
     @CrossOrigin
     @GetMapping("/{gateId}/")
-    public ArduinoResponse sendSth(@RequestParam String uid, @PathVariable Integer gateId){
-        return new ArduinoResponse("Welcome Name", "Logged IN.", true);//example response
-        // when Employee is out:  return new ArduinoResponse("Bye Name", "Logged OUT.", true)
+    public ArduinoResponse logInOrLogOut(@RequestParam String uid, @PathVariable Integer gateId){
+        //do sth in database
+        return new ArduinoResponse("Welcome John", "Logged IN.", true);//example response
+        // when Employee is leaving out:  return new ArduinoResponse("Bye John", "Logged OUT.", true)
 
     }
 
