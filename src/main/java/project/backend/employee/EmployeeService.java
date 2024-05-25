@@ -32,20 +32,20 @@ public class EmployeeService {
 
     public Employee suspendEmployee(Long id) {
         Employee employee = this.getEmployee(id);
-        employee.setStatus(EmployeeRole.SUSPENDED.name());
+        employee.setStatus(EmployeeRole.SUSPENDED);
 
         return employeeRepository.save(employee);
     }
     public Employee deactivateEmployee(Long id) {
         Employee employee = this.getEmployee(id);
 
-        employee.setStatus(EmployeeRole.DEACTIVATED.name());
+        employee.setStatus(EmployeeRole.DEACTIVATED);
         return employeeRepository.save(employee);
     }
 
     public Employee activateEmployee(Long id) {
         Employee employee = this.getEmployee(id);
-        employee.setStatus(EmployeeRole.EMPLOYEE.name());
+        employee.setStatus(EmployeeRole.EMPLOYEE);
         return employeeRepository.save(employee);
     }
 }

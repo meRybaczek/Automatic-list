@@ -1,9 +1,6 @@
 package project.backend.employee;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +20,8 @@ public class Employee {
     private String rfid;
 
     @Setter
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private EmployeeRole status;
 
 
     public Employee(String firstName, String lastName, String rfid, boolean hasPermission) {

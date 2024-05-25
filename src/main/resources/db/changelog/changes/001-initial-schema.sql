@@ -1,33 +1,40 @@
 CREATE TABLE EMPLOYEE (
-                          ID INT NOT NULL PRIMARY KEY,
-                          FIRST_NAME VARCHAR(50),
-                          LAST_NAME VARCHAR(50),
-                          RFID VARCHAR(50),
-                          STATUS VARCHAR(50)
+                          id INT NOT NULL PRIMARY KEY,
+                          first_name VARCHAR(50),
+                          last_name VARCHAR(50),
+                          rfid VARCHAR(50),
+                          status VARCHAR(50)
 );
 
 CREATE TABLE ROLE (
-                      ID INT NOT NULL PRIMARY KEY,
-                      ROLE_NAME VARCHAR(50)
-)
+                      id INT NOT NULL PRIMARY KEY,
+                      role_name VARCHAR(50)
+);
 
 CREATE TABLE ENTRANCE_LOG (
-                      ID INT NOT NULL PRIMARY KEY,
-                      EMP_RFID VARCHAR(50),
-                      STATUS VARCHAR(50),
-                      DATE VARCHAR(50),
-)
+                              id INT NOT NULL PRIMARY KEY,
+                              employee_rfid VARCHAR(50),
+                              status VARCHAR(50),
+                              date TIMESTAMP
+);
+
+CREATE SEQUENCE ENTRANCE_LOG_SEQ START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE GATE (
-                      ID INT NOT NULL PRIMARY KEY,
-                      GATE_NUMBER VARCHAR(5),
-                      REQUIRED_ROLE_NAME VARCHAR(50)
-)
+                      id INT NOT NULL PRIMARY KEY,
+                      gate_number INT,
+                      required_status VARCHAR(50)
+);
 
-INSERT INTO EMPLOYEE (ID, FIRST_NAME, LAST_NAME, RFID)
+INSERT INTO EMPLOYEE (id, first_name, last_name, rfid, status)
 VALUES
-    ('1', 'Iza', 'Wozniak', '34F7CF4F'),
-    ('2', 'Pawel', 'Cz.', '4ae9415b'),
-    ('3', 'Wojciech', 'R.', 'c0ebd609'),
-    ('4', 'Darek', 'N.', '20ca8973'),
-    ('5', 'Maciej', 'S.', '8e8e7730');
+    (1, 'Iza', 'Wozniak', '34F7CF4F', 'UNKNOWN'),
+    (2, 'Pawel', 'Cz.', '4ae9415b', 'MANAGER'),
+    (3, 'Wojciech', 'R.', 'c0ebd609', 'MANAGER'),
+    (4, 'Darek', 'N.', '20ca8973', 'EMPLOYEE'),
+    (5, 'Maciej', 'S.', '8e8e7730', 'SUSPENDED');
+
+INSERT INTO GATE(id, gate_number, required_status)
+VALUES
+    (1, 1, 'EMPLOYEE'),
+    (2, 2, 'MANAGER');

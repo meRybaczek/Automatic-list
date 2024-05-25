@@ -1,8 +1,5 @@
 package project.backend.employee;
 
-import java.util.Optional;
-import java.util.stream.Stream;
-
 public enum EmployeeRole {
 
     ADMIN(2),
@@ -18,21 +15,8 @@ public enum EmployeeRole {
         this.priority = priority;
     }
 
-    public boolean isPriorityMatching(String actualRole, String expectedRole) {
-
-        Optional<EmployeeRole> givenEmployeeRole = asEmployeeRole(actualRole);
-        Optional<EmployeeRole> expectedEmployeeRole = asEmployeeRole(expectedRole);
-        boolean areEmployeeRolesValid = givenEmployeeRole.isPresent() && expectedEmployeeRole.isPresent();
-
-        if (areEmployeeRolesValid) {
-            return givenEmployeeRole.get().priority >= expectedEmployeeRole.get().priority;
-        }
-
-        return false;
-    }
-
-    private static Optional<EmployeeRole> asEmployeeRole(String role) {
-        return Stream.of(EmployeeRole.values()).filter(r -> r.name().equals(role)).findFirst();
+    public int getPriority() {
+        return priority;
     }
 }
 
