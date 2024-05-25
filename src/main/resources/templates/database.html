@@ -4,18 +4,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Employee Management</title>
+    <title>Employees database</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;500;600;700&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Share+Tech+Mono&amp;display=swap">
     <link rel="stylesheet" href="assets/css/animate.min.css">
     <link rel="stylesheet" href="assets/css/Banner-Heading-Image-images.css">
     <link rel="stylesheet" href="assets/css/Navbar-Centered-Brand-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-md bg-body text-end py-3" style="margin-bottom: 43px;margin-top: 15px;background: var(--bs-navbar-brand-color);border-bottom-style: none;">
-        <div class="container"><a href="employee-form.html"><img src="assets/img/cyber-security.png" width="100" height="100" href="employee-form.html"></a><span style="text-align: left;font-weight: bold;font-family: 'Share Tech Mono', monospace;letter-spacing: 0px;font-size: 41px;color: var(--bs-navbar-brand-color);margin-left: 18px;" href="employee-form.html">Entry Systems</span><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container"><a href="user-form.html"><img src="assets/img/cyber-security.png" width="100" height="100" href="user-form.html"></a><span style="text-align: left;font-weight: bold;font-family: 'Share Tech Mono', monospace;letter-spacing: 0px;font-size: 41px;color: var(--bs-navbar-brand-color);margin-left: 18px;" href="user-form.html">Entry Systems</span><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-2">
                 <ul class="navbar-nav text-end ms-auto" style="text-align: right;">
                     <li class="nav-item"></li>
@@ -25,69 +26,59 @@
             </div>
         </div>
     </nav>
-    <div class="row">
-        <div class="col"></div>
-    </div>
-    <div class="row">
-        <div class="col"></div>
-    </div>
-    <div class="container" style="margin-top: 30px;">
-        <div class="row">
-            <div class="col-md-4">
-                <h3>Add new employee:</h3>
-            </div>
-            <div class="col-md-4 text-end"></div>
-            <div class="col">
-                <h3 style="text-align: right;">Find employee</h3>
-            </div>
-        </div>
+    
+    <div class="container">
+        <h1>Sample table</h1>
+    <br>
+    <table>
+        <thead>
+            <tr>
+                <th id="imie">Imię</th>
+                <th id="nazwisko">Nazwisko</th>
+                <th>PESEL</th>
+                <th>ID</th>
+                <th>RFID</th>
+                <th>Czas wejścia</th>
+                <th>Czas wyjścia</th>
+                <th>ID pomieszczenia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Jan</td>
+                <td>Kowalski</td>
+                <td>85052211485</td>
+                <td>#24672569725</td>
+                <td>C0EBD69</td>
+                <td>03.03.2024 8:00</td>
+                <td>03.03.2024 16:00</td>
+                <td>Magazyn</td>
+            </tr>
+            <tr>
+                <td>Stachu</td>
+                <td>Jones</td>
+                <td>69010132149</td>
+                <td>#12463267598</td>
+                <td>20CA8973</td>
+                <td>03.03.2024 8:00</td>
+                <td>03.03.2024 10:24</td>
+                <td>Biuro 1</td>
+            </tr>
+            <tr>
+                <td>Stachu</td>
+                <td>Jones</td>
+                <td>69010132149</td>
+                <td>#12463267598</td>
+                <td>20CA8973</td>
+                <td>03.03.2024 11:00</td>
+                <td></td>
+                <td>Biuro 1</td> 
+            </tr>
+        </tbody>
+    </table>
     </div>
     <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <form id="addEmployeeForm">
-                    <div class="form-group"><label class="form-label" for="firstName">First Name:</label><input class="form-control form-control" type="text" id="firstName" name="firstName"><br></div>
-                    <div class="form-group"><label class="form-label" for="lastName">Last Name:</label><input class="form-control form-control" type="text" id="lastName" name="lastName"><br></div>
-                    <div class="form-group"><label class="form-label" for="rfid">RFID:</label><input class="form-control form-control" type="text" id="rfid" name="rfid"><br></div>
-                    <div class="form-group"><label class="form-label" for="hasPermission">Gate 1 permission?:</label><input type="checkbox" class="form-check-input" id="hasPermission" name="hasPermission" style="width: 22px;height: 22px;margin-left: 18px;"><br></div><button class="btn btn-primary" type="submit" style="margin-top: 20px;">Add Employee</button>
-                </form>
-                <div class="row" id="resultrow"></div>
-            </div>
-            <div class="col" style="font-weight: bold;text-align: justify;">
-                <h3 data-bss-hover-animate="pulse" id="serverResponse" style="margin-left: 20px;margin-right: 20px;border-style: none;background: var(--bs-gray-100);"></h3>
-            </div>
-            <div class="col text-end col-md-2 col-md-3">
-                <div class="row">
-                    <div class="col" style="border-style: none;text-align: right;padding-top: 30px;">
-                        <div class="form-group" style="margin-bottom: -15px;"><input type="text" class="form-control" id="id" name="id" placeholder="Employee id" style="text-align: right;"><br></div><button class="btn btn-primary" type="button" onclick="getEmployeeById()">Find by ID</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col" style="padding-top: 30px;">
-                        <div class="form-group"><input type="text" class="form-control" id="rfidSearch" name="rfidSearch" placeholder="RFID" style="text-align: right;margin-bottom: -15px;"><br></div><button class="btn btn-primary" type="button" onclick="getEmployeeByRfid()">Find by RFID</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col" style="padding-top: 30px;">
-                        <div class="form-group"><input type="text" class="form-control" id="lastNameSearch" name="lastNameSearch" placeholder="Lastname" style="text-align: right;margin-bottom: -15px;"><br></div><button class="btn btn-primary" type="button" onclick="getEmployeeBySurname()">Find by lastname</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col" style="padding-top: 30px;">
-                        <div class="form-group"><input type="text" class="form-control" id="firstNameSearch" name="firstNameSearch" placeholder="Firstname" style="text-align: right;margin-bottom: -15px;"><br></div><button class="btn btn-primary" type="button" onclick="getEmployeeByName()">Find by firstname</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col" style="margin-top: 40px;">
-                        <div class="form-group"><input type="text" class="form-control" id="deleteId" name="deleteId" placeholder="Employee ID" style="text-align: right;margin-bottom: 11px;"><button class="btn btn-danger" data-bs-toggle="tooltip" data-bss-tooltip="" type="button" onclick="deleteEmployeeById()" title="WARNING !! The data will be permanently deleted">Delete employee By ID</button><br></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container"></div>
-    <div class="container">
-        <form id="deleteEmployeeForm">
+        <form id="deleteUserForm">
             <footer class="text-center">
                 <div class="container text-muted py-4 py-lg-5">
                     <ul class="list-inline">
@@ -111,7 +102,6 @@
             </footer>
         </form>
     </div>
-    <div></div>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/main.js"></script>
