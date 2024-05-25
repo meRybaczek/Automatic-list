@@ -24,11 +24,11 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeByFirstName(String name){
-        return employeeRepository.findEmployeeByFirstName(name);
+        return employeeRepository.findByFirstNameIgnoreCase(name);
     }
 
     public Employee getEmployeeByLastName(String lastName){
-        return employeeRepository.findEmployeeByLastName(lastName);
+        return employeeRepository.findByLastNameIgnoreCase(lastName);
     }
 
     public Employee getEmployeeByRfid(String rfid){
