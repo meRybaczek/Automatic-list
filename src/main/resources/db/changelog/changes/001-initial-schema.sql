@@ -2,7 +2,8 @@ CREATE TABLE EMPLOYEE (
                           ID INT NOT NULL PRIMARY KEY,
                           FIRST_NAME VARCHAR(50),
                           LAST_NAME VARCHAR(50),
-                          RFID VARCHAR(50)
+                          RFID VARCHAR(50),
+                          STATUS VARCHAR(50)
 );
 
 CREATE TABLE ROLE (
@@ -14,6 +15,7 @@ CREATE TABLE ENTRANCE_LOG (
                       ID INT NOT NULL PRIMARY KEY,
                       EMP_RFID VARCHAR(50),
                       STATUS VARCHAR(50),
+                      DATE VARCHAR(50),
 )
 
 CREATE TABLE GATE (

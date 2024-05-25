@@ -21,7 +21,7 @@ public class ArduinoController {
         //do sth in database
         log.info("user id: {}, gateId: {}",uid,gateId);
         if ("c0ebd609".equals(uid)) {
-            return new ArduinoResponse("Welcome John", "Logged IN.", true);//example response
+            return new ArduinoResponse("Hi John", "Logged IN.", true);//example response
         }
         return new ArduinoResponse("Not authorized", "Get OUT.", false);//example response
         // when Employee is leaving out:  return new ArduinoResponse("Bye John", "Logged OUT.", true)

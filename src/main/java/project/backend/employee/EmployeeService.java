@@ -30,26 +30,22 @@ public class EmployeeService {
         return employeeRepository.findEmployeeByRfid(rfid);
     }
 
+    public Employee suspendEmployee(Long id) {
+        Employee employee = this.getEmployee(id);
+        employee.setStatus(EmployeeRole.SUSPENDED.name());
+
+        return employeeRepository.save(employee);
+    }
     public Employee deactivateEmployee(Long id) {
         Employee employee = this.getEmployee(id);
 
-        employee.setHasPermission(false);
+        employee.setStatus(EmployeeRole.DEACTIVATED.name());
         return employeeRepository.save(employee);
     }
 
     public Employee activateEmployee(Long id) {
         Employee employee = this.getEmployee(id);
-
-        employee.setHasPermission(true);
+        employee.setStatus(EmployeeRole.EMPLOYEE.name());
         return employeeRepository.save(employee);
-    }
-
-    public String handleArduinoRequest(String rfid) {
-        Employee employee = this.getEmployeeByRfid(rfid);
-
-        if (employee != null){
-            return "%s %s".formatted(employee.getFirstName(), employee.getLastName());
-        }
-        return "UNAUTHORIZED";
     }
 }

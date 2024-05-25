@@ -23,12 +23,12 @@ public class Employee {
     private String rfid;
 
     @Setter
-    private boolean hasPermission;
+    private String status;
+
 
     public Employee(String firstName, String lastName, String rfid, boolean hasPermission) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.rfid = rfid;
-        this.hasPermission = hasPermission;
     }
 }
