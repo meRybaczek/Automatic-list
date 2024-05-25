@@ -1,4 +1,4 @@
-package project.backend;
+package project.backend.employee;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping("/add")
-    public Employee addEmployee(@RequestBody Employee employee) {
+    public Employee addEmployee(@RequestBody EmployeeDTO employee) {
         return employeeService.addEmployee(employee);
     }
 
@@ -47,4 +47,7 @@ public class EmployeeController {
     public Employee activateEmployeeById(@RequestParam Long id){
         return employeeService.activateEmployee(id);
     }
+
 }
+
+

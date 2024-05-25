@@ -1,11 +1,9 @@
-package project.backend;
+package project.backend.employee;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeControllerTest {
@@ -15,7 +13,7 @@ class EmployeeControllerTest {
     private static final boolean HAS_PERMISSION = false;
     private static final Employee EMPLOYEE = new Employee(NAME, LAST_NAME, RFID, HAS_PERMISSION);
 
-    private final EmployeeService employeeService = mock(EmployeeService.class);
+    private final EmployeeService employeeService = Mockito.mock(EmployeeService.class);
     private final EmployeeController employeeController = new EmployeeController(employeeService);
 
     @Test
@@ -24,7 +22,7 @@ class EmployeeControllerTest {
         employeeController.addEmployee(EMPLOYEE);
 
         //then
-        verify(employeeService).addEmployee(EMPLOYEE);
+        Mockito.verify(employeeService).addEmployee(EMPLOYEE);
     }
 
     @Test
@@ -33,7 +31,7 @@ class EmployeeControllerTest {
         employeeController.getEmployeeById(1L);
 
         //then
-        verify(employeeService).getEmployee(1L);
+        Mockito.verify(employeeService).getEmployee(1L);
     };
     @Test
     void shouldFindEmployeeByRfid(){
@@ -41,7 +39,7 @@ class EmployeeControllerTest {
         employeeController.getEmployeeByRfid(RFID);
 
         //then
-        verify(employeeService).getEmployeeByRfid(RFID);
+        Mockito.verify(employeeService).getEmployeeByRfid(RFID);
     };
     @Test
     void shouldFindEmployeeBySurname(){
@@ -49,7 +47,7 @@ class EmployeeControllerTest {
         employeeController.getEmployeeBySurname(LAST_NAME);
 
         //then
-        verify(employeeService).getEmployeeByLastName(LAST_NAME);
+        Mockito.verify(employeeService).getEmployeeByLastName(LAST_NAME);
     };
     @Test
     void shouldFindEmployeeByName(){
@@ -57,7 +55,7 @@ class EmployeeControllerTest {
         employeeController.getEmployeeByName(NAME);
 
         //then
-        verify(employeeService).getEmployeeByFirstName(NAME);
+        Mockito.verify(employeeService).getEmployeeByFirstName(NAME);
     };
     @Test
     void shouldDeleteEmployee(){
@@ -65,7 +63,7 @@ class EmployeeControllerTest {
         employeeController.deactivateEmployeeById(1L);
 
         //then
-        verify(employeeService).deactivateEmployee(1L);
+        Mockito.verify(employeeService).deactivateEmployee(1L);
     };
 
 }

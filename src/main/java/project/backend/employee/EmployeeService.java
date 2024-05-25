@@ -1,4 +1,4 @@
-package project.backend;
+package project.backend.employee;
 
 
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    public Employee addEmployee(Employee employee) {
+    public Employee addEmployee(EmployeeDTO employeeDTO) {
+
+        Employee employee = new Employee(
+                employeeDTO.firstName(), employeeDTO.lastName(), employeeDTO.rfid(), EmployeeRole.valueOf(employeeDTO.status()));
 
         return employeeRepository.save(employee);
     }
@@ -30,17 +33,22 @@ public class EmployeeService {
         return employeeRepository.findEmployeeByRfid(rfid);
     }
 
+    public Employee suspendEmployee(Long id) {
+        Employee employee = this.getEmployee(id);
+        employee.setStatus(EmployeeRole.SUSPENDED);
+
+        return employeeRepository.save(employee);
+    }
     public Employee deactivateEmployee(Long id) {
         Employee employee = this.getEmployee(id);
 
-        employee.setHasPermission(false);
+        employee.setStatus(EmployeeRole.DEACTIVATED);
         return employeeRepository.save(employee);
     }
 
     public Employee activateEmployee(Long id) {
         Employee employee = this.getEmployee(id);
-
-        employee.setHasPermission(true);
+        employee.setStatus(EmployeeRole.EMPLOYEE);
         return employeeRepository.save(employee);
     }
 }
