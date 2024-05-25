@@ -5,8 +5,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository <Employee, Long> {
-    Employee findEmployeeByFirstName(String name);
-    Employee findEmployeeByLastName(String lastName);
+    Employee findByFirstNameIgnoreCase(String name);
+    Employee findByLastNameIgnoreCase(String lastName);
     Employee findEmployeeByRfid(String rfid);
 
 }
