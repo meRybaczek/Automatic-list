@@ -1,4 +1,4 @@
-package project.backend;
+package project.backend.employee;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

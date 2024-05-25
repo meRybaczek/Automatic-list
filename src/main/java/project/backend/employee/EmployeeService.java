@@ -1,4 +1,4 @@
-package project.backend;
+package project.backend.employee;
 
 
 import lombok.RequiredArgsConstructor;
@@ -42,5 +42,14 @@ public class EmployeeService {
 
         employee.setHasPermission(true);
         return employeeRepository.save(employee);
+    }
+
+    public String handleArduinoRequest(String rfid) {
+        Employee employee = this.getEmployeeByRfid(rfid);
+
+        if (employee != null){
+            return "%s %s".formatted(employee.getFirstName(), employee.getLastName());
+        }
+        return "UNAUTHORIZED";
     }
 }

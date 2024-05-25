@@ -1,9 +1,12 @@
-package project.backend;
+package project.backend.arduino;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import project.backend.employee.EmployeeService;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
@@ -16,7 +19,11 @@ public class ArduinoController {
     @GetMapping("/{gateId}/")
     public ArduinoResponse logInOrLogOut(@RequestParam String uid, @PathVariable Integer gateId){
         //do sth in database
-        return new ArduinoResponse("Welcome John", "Logged IN.", true);//example response
+        log.info("user id: {}, gateId: {}",uid,gateId);
+        if ("c0ebd609".equals(uid)) {
+            return new ArduinoResponse("Welcome John", "Logged IN.", true);//example response
+        }
+        return new ArduinoResponse("Not authorized", "Get OUT.", false);//example response
         // when Employee is leaving out:  return new ArduinoResponse("Bye John", "Logged OUT.", true)
 
     }
