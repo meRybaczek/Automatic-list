@@ -24,9 +24,10 @@ public class Employee {
     private EmployeeRole status;
 
 
-    public Employee(String firstName, String lastName, String rfid, boolean hasPermission) {
+    public Employee(String firstName, String lastName, String rfid, EmployeeRole status) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.rfid = rfid;
+        this.status = status;
     }
 }

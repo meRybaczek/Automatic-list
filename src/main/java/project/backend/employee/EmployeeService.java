@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    public Employee addEmployee(Employee employee) {
+    public Employee addEmployee(EmployeeDTO employeeDTO) {
+
+        Employee employee = new Employee(
+                employeeDTO.firstName(), employeeDTO.lastName(), employeeDTO.rfid(), EmployeeRole.valueOf(employeeDTO.status()));
 
         return employeeRepository.save(employee);
     }
