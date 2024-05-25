@@ -22,10 +22,10 @@ CREATE TABLE GATE (
                       REQUIRED_ROLE_NAME VARCHAR(50)
 )
 
-INSERT INTO EMPLOYEE (ID, FIRST_NAME, LAST_NAME, RFID, HAS_PERMISSION)
+INSERT INTO EMPLOYEE (ID, FIRST_NAME, LAST_NAME, RFID)
 VALUES
     ('1', 'Iza', 'Wozniak', '34F7CF4F'),
-    ('2', 'Pawel', 'Cz.', 'C0EBD69'),
-    ('3', 'Wojciech', 'R.', 'BAA62640'),
-    ('4', 'Darek', 'N.', '20CA8973'),
-    ('5', 'Maciej', 'S.', 'C0BC073');
+    ('2', 'Pawel', 'Cz.', '4ae9415b'),
+    ('3', 'Wojciech', 'R.', 'c0ebd609'),
+    ('4', 'Darek', 'N.', '20ca8973'),
+    ('5', 'Maciej', 'S.', '8e8e7730');
