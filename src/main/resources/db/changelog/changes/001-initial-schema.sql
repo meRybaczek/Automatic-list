@@ -12,13 +12,13 @@ CREATE TABLE ROLE (
 );
 
 CREATE TABLE ENTRANCE_LOG (
-                              id INT NOT NULL PRIMARY KEY,
+                              id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                               employee_rfid VARCHAR(50),
                               status VARCHAR(50),
-                              date TIMESTAMP
+                              date VARCHAR(50)
 );
 
-CREATE SEQUENCE ENTRANCE_LOG_SEQ START WITH 1 INCREMENT BY 1;
+
 
 CREATE TABLE GATE (
                       id INT NOT NULL PRIMARY KEY,
