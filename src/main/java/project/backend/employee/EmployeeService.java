@@ -14,9 +14,13 @@ public class EmployeeService {
     public Employee addEmployee(EmployeeDTO employeeDTO) {
 
         Employee employee = new Employee(
-                employeeDTO.firstName(), employeeDTO.lastName(), employeeDTO.rfid(), Stream.of(EmployeeRole.values()).filter(r -> r.name().toLowerCase().equals(employeeDTO.status().toLowerCase())).findAny().orElse(EmployeeRole.UNKNOWN));
+                employeeDTO.firstName(), employeeDTO.lastName(), employeeDTO.rfid(), mapStatus(employeeDTO));
 
         return employeeRepository.save(employee);
+    }
+
+    private static EmployeeRole mapStatus(EmployeeDTO employeeDTO) {
+        return Stream.of(EmployeeRole.values()).filter(r -> r.name().equalsIgnoreCase(employeeDTO.status())).findAny().orElse(EmployeeRole.UNKNOWN);
     }
 
     public Employee getEmployee(Long id){
@@ -24,15 +28,15 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeByFirstName(String name){
-        return employeeRepository.findEmployeeByFirstName(name);
+        return employeeRepository.findEmployeeByFirstNameIgnoreCase(name);
     }
 
     public Employee getEmployeeByLastName(String lastName){
-        return employeeRepository.findEmployeeByLastName(lastName);
+        return employeeRepository.findEmployeeByLastNameIgnoreCase(lastName);
     }
 
     public Employee getEmployeeByRfid(String rfid){
-        return employeeRepository.findEmployeeByRfid(rfid);
+        return employeeRepository.findEmployeeByRfidIgnoreCase(rfid);
     }
 
     public Employee suspendEmployee(Long id) {

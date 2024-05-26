@@ -30,7 +30,7 @@ class EmployeeServiceTest {
     @Test
     void shouldFindEmployeeByName() {
         //given
-        Mockito.when(employeeRepository.findEmployeeByFirstName(NAME)).thenReturn(EMPLOYEE);
+        Mockito.when(employeeRepository.findEmployeeByFirstNameIgnoreCase(NAME)).thenReturn(EMPLOYEE);
         //when
         Employee receivedEmployee = employeeService.getEmployeeByFirstName(NAME);
 
@@ -50,7 +50,7 @@ class EmployeeServiceTest {
     @Test
     void shouldFindEmployeeByLastName() {
         //given
-        Mockito.when(employeeRepository.findEmployeeByLastName(LAST_NAME)).thenReturn(EMPLOYEE);
+        Mockito.when(employeeRepository.findEmployeeByLastNameIgnoreCase(LAST_NAME)).thenReturn(EMPLOYEE);
         //when
         Employee receivedEmployee = employeeService.getEmployeeByLastName(LAST_NAME);
 
@@ -70,7 +70,7 @@ class EmployeeServiceTest {
     @Test
     void shouldFindEmployeeByRfid() {
         //given
-        Mockito.when(employeeRepository.findEmployeeByRfid(RFID)).thenReturn(EMPLOYEE);
+        Mockito.when(employeeRepository.findEmployeeByRfidIgnoreCase(RFID)).thenReturn(EMPLOYEE);
         //when
         Employee receivedEmployee = employeeService.getEmployeeByRfid(RFID);
 
