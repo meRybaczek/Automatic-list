@@ -1,6 +1,5 @@
 package project.backend.reporting;
 
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +21,29 @@ public class ReportingController {
     private ReportingService reportingService;
 
     @GetMapping("/reporting/access/all")
-    public ResponseEntity<Resource> getLogs(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
-        return reportingService.getLogs(startDate, endDate);
+    public ResponseEntity<InputStreamResource> getLogs(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+        InputStreamResource file = new InputStreamResource(reportingService.getLogs(startDate, endDate));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Employees.xlsx")
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(file);
     }
     @GetMapping("/reporting/access/{id}")
-    public ResponseEntity<Resource> getLogsByEmployeeId(@PathVariable long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
-        return reportingService.getEmployee(id, startDate, endDate);
+    public ResponseEntity<InputStreamResource> getLogsByEmployeeId(@PathVariable long id, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+        InputStreamResource file = new InputStreamResource(reportingService.getLogsOfGivenEmployee(id, startDate, endDate));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Employees.xlsx")
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(file);
     }
 
     @GetMapping("/reporting/users/all")
     public ResponseEntity<InputStreamResource> getAllUsers() {
-
         InputStreamResource file = new InputStreamResource(reportingService.getAllUsers());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Employees.xlsx")
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-                .body( file);
+                .body(file);
     }
 
 }
