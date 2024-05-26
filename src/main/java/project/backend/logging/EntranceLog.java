@@ -22,6 +22,7 @@ public class EntranceLog {
     @Enumerated(EnumType.STRING)
     private EmployeeRole status;
 
+    @Getter
     private LocalDateTime date;
 
     @Setter

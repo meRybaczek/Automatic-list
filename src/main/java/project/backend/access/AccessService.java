@@ -49,6 +49,18 @@ public class AccessService {
         return new AccessResponse("Hi %s".formatted(employee.getFirstName()), "Access denied!", false, false);
     }
 
+    public AccessResponse getLastLog(String rfid) {
+        EntranceLog entranceLog = getEntranceLogByRfid(rfid);
+        String date;
+        if (entranceLog == null) {
+            date = "No data";
+        } else {
+            date = entranceLog.getDate().toString().replace("T", " ");
+        }
+
+        return new AccessResponse("Logged <IN> at:", "%s".formatted(date), false, false);
+    }
+
     private String getMessage(EntranceLog entranceLog) {
         String welcomeMessage = "Hi";
         if (entranceLog.getGateAccessStatus() == null) {
@@ -62,21 +74,29 @@ public class AccessService {
     }
 
     private EntranceLog createEntranceLog(Employee employee, boolean hasPriority) {
-        List<EntranceLog> entranceLogList = entranceLogRepository.findEntranceLogByRfid(employee.getRfid());
+        EntranceLog entranceLogList = getEntranceLogByRfid(employee.getRfid());
 
         EntranceLog entranceLog = new EntranceLog(employee.getRfid(), employee.getStatus(), LocalDateTime.now());
         setEntranceLogStatus(hasPriority, entranceLog, entranceLogList);
         return entranceLogRepository.save(entranceLog);
     }
 
-    private static void setEntranceLogStatus(boolean hasPriority, EntranceLog entranceLog, List<EntranceLog> entranceLogList) {
-        if (!hasPriority) {
-            entranceLog.setGateAccessStatus(REJECTED);
+    private EntranceLog getEntranceLogByRfid(String rfid) {
+        List<EntranceLog> entranceLogByRfid = entranceLogRepository.findEntranceLogByRfid(rfid);
+        if (entranceLogByRfid.isEmpty()) {
+            return null;
         }
-        else if (entranceLogList.isEmpty() || OUT.equals(entranceLogList.get(0).getGateAccessStatus())) {
-            entranceLog.setGateAccessStatus(IN);
+        return entranceLogByRfid.get(0);
+    }
+
+    private static void setEntranceLogStatus(boolean hasPriority, EntranceLog newEntranceLog, EntranceLog receivedEntranceLog) {
+        if (!hasPriority) {
+            newEntranceLog.setGateAccessStatus(REJECTED);
+        }
+        else if (receivedEntranceLog == null || OUT.equals(receivedEntranceLog.getGateAccessStatus())) {
+            newEntranceLog.setGateAccessStatus(IN);
         } else {
-            entranceLog.setGateAccessStatus(OUT);
+            newEntranceLog.setGateAccessStatus(OUT);
         }
     }
 
