@@ -20,12 +20,12 @@ public class ReportingService {
     private EmployeeRepository employeeRepository;
 
     public ByteArrayInputStream getLogs(LocalDate startDate, LocalDate endDate) {
-        List<ReportingDTO> employeeLogs = employeeRepository.findAllEntranceLogsBetweenDates(startDate, endDate);
+        List<ReportingDTO> employeeLogs = employeeRepository.findAllEntranceLogsBetweenDates(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay());
         return ExcelHelper.EmployeeLogsToExcel(employeeLogs);
     }
 
     public ByteArrayInputStream getLogsOfGivenEmployee(long id, LocalDate startDate, LocalDate endDate) {
-        List<ReportingDTO> employeeLogs = employeeRepository.findAllEntranceLogsBetweenDatesForGivenEmployeeId(id, startDate, endDate);
+        List<ReportingDTO> employeeLogs = employeeRepository.findAllEntranceLogsBetweenDatesForGivenEmployeeId(id, startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay());
         return ExcelHelper.EmployeeLogsToExcel(employeeLogs);
     }
 
