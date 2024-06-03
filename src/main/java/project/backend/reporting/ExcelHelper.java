@@ -42,7 +42,7 @@ public class ExcelHelper {
         }
     }
 
-    public static ByteArrayInputStream EmployeeLogsToExcel(List<ReportingDAO> logs) {
+    public static ByteArrayInputStream EmployeeLogsToExcel(List<ReportingDTO> logs) {
         String fileName = "EmployeeLogs";
 
         try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -53,7 +53,7 @@ public class ExcelHelper {
             createHeader(sheet, Headers);
 
             int rowIdx = 1;
-            for (ReportingDAO entranceLog : logs) {
+            for (ReportingDTO entranceLog : logs) {
                 Row row = sheet.createRow(rowIdx++);
 
                 row.createCell(0).setCellValue(entranceLog.id());
