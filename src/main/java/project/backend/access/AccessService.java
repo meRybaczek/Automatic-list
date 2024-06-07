@@ -56,11 +56,13 @@ public class AccessService {
 
         if (entranceLog == null) {
             date = "No data";
+            status = "No data";
         } else {
             date = entranceLog.getDate().toString().replace("T", " ");
+            status = entranceLog.getGateAccessStatus().name();
         }
 
-        status = entranceLog.getGateAccessStatus().name();
+
 
         return new AccessResponse("Status:" + status + " at:", "%s".formatted(date), false, false);
     }
