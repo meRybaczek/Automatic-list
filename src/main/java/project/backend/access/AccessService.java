@@ -52,13 +52,17 @@ public class AccessService {
     public AccessResponse getLastLog(String rfid) {
         EntranceLog entranceLog = getEntranceLogByRfid(rfid);
         String date;
+        String status;
+
         if (entranceLog == null) {
             date = "No data";
         } else {
             date = entranceLog.getDate().toString().replace("T", " ");
         }
 
-        return new AccessResponse("Logged <IN> at:", "%s".formatted(date), false, false);
+        status = entranceLog.getGateAccessStatus().name();
+
+        return new AccessResponse("Status:" + status + " at:", "%s".formatted(date), false, false);
     }
 
     private String getMessage(EntranceLog entranceLog) {
