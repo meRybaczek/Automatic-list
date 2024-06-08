@@ -1,10 +1,11 @@
 package project.backend.reporting;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.backend.employee.Employee;
 import project.backend.employee.EmployeeRepository;
 import project.backend.employee.EmployeeRole;
+import project.backend.logging.EntranceLogRepository;
 
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
@@ -14,10 +15,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ReportingService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    private final EntranceLogRepository entranceLogRepository;
 
     public ByteArrayInputStream getLogs(LocalDate startDate, LocalDate endDate) {
         List<ReportingDTO> employeeLogs = employeeRepository.findAllEntranceLogsBetweenDates(startDate.atStartOfDay(), endDate.plusDays(1).atStartOfDay());
@@ -35,7 +38,9 @@ public class ReportingService {
     }
 
     public ByteArrayInputStream getActiveUsers() {
-        List<Employee> employees = employeeRepository.getActiveEmployees();
+        LocalDate today = LocalDate.now();
+        List<String> activeEmployeesRfid = entranceLogRepository.findActiveEmployeesRfid(today.atStartOfDay(), today.plusDays(1).atStartOfDay());
+        List<Employee> employees = employeeRepository.findEmployeesByRfidIgnoreCase(activeEmployeesRfid);
         return ExcelHelper.employeesToExcel(employees);
     }
 

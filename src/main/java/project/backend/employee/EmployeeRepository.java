@@ -24,7 +24,10 @@ public interface EmployeeRepository extends JpaRepository <Employee, Long> {
     @Query(value = "SELECT emp from Employee emp WHERE emp.status IN :statusSet")
     List<Employee> getEmployeesByRoles(@Param("statusSet")Set<EmployeeRole> statusSet);
 
-    @Query(value = "SELECT emp from Employee emp WHERE emp.status <> 'DEACTIVATED'")
+    @Query(value = "SELECT emp from Employee emp JOIN EntranceLog el ON emp.rfid = el.employeeRfid WHERE EXISTS (select k.status FROM EntranceLog k order by k.date desc limit 1 ) ")
     List<Employee> getActiveEmployees();
+
+    @Query("select emp from Employee emp where lower(emp.rfid) in :rfidList")
+    public List<Employee> findEmployeesByRfidIgnoreCase(@Param("rfidList") List<String> rfidList);
 }
 
