@@ -29,7 +29,11 @@ class EmployeeServiceTest {
     @Test
     void shouldFindEmployeeByName() {
         //given
+
         Mockito.when(employeeRepository.findEmployeeByFirstNameIgnoreCase(NAME)).thenReturn(EMPLOYEE);
+
+
+
         //when
         Employee receivedEmployee = employeeService.getEmployeeByFirstName(NAME);
 
@@ -49,7 +53,9 @@ class EmployeeServiceTest {
     @Test
     void shouldFindEmployeeByLastName() {
         //given
+
         Mockito.when(employeeRepository.findEmployeeByLastNameIgnoreCase(LAST_NAME)).thenReturn(EMPLOYEE);
+
         //when
         Employee receivedEmployee = employeeService.getEmployeeByLastName(LAST_NAME);
 
