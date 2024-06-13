@@ -10,8 +10,7 @@ class EmployeeControllerTest {
     private static final String NAME = "name";
     private static final String LAST_NAME = "lastName";
     private static final String RFID = "rfid";
-    private static final boolean HAS_PERMISSION = false;
-    private static final Employee EMPLOYEE = new Employee(NAME, LAST_NAME, RFID, HAS_PERMISSION);
+    private static final EmployeeDTO EMPLOYEE = new EmployeeDTO(NAME, LAST_NAME, RFID, "EMPLOYEE");
 
     private final EmployeeService employeeService = Mockito.mock(EmployeeService.class);
     private final EmployeeController employeeController = new EmployeeController(employeeService);

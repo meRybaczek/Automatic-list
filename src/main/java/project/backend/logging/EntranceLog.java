@@ -1,8 +1,13 @@
 package project.backend.logging;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import project.backend.access.GateAccessStatus;
 import project.backend.employee.EmployeeRole;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -17,9 +22,15 @@ public class EntranceLog {
     @Enumerated(EnumType.STRING)
     private EmployeeRole status;
 
-    private String date;
+    @Getter
+    private LocalDateTime date;
 
-    public EntranceLog(String employeeRfid, EmployeeRole status, String date) {
+    @Setter
+    @Getter
+    @Enumerated(EnumType.STRING)
+    private GateAccessStatus gateAccessStatus;
+
+    public EntranceLog(String employeeRfid, EmployeeRole status, LocalDateTime date) {
         this.employeeRfid = employeeRfid;
         this.status = status;
         this.date = date;

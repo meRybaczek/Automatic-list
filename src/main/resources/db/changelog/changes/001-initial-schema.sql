@@ -15,7 +15,8 @@ CREATE TABLE ENTRANCE_LOG (
                               id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
                               employee_rfid VARCHAR(50),
                               status VARCHAR(50),
-                              date VARCHAR(50)
+                              date TIMESTAMP,
+                              gate_access_status VARCHAR(8)
 );
 
 
