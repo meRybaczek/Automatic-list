@@ -7,18 +7,20 @@
 #include <WiFiS3.h>
 #include "ArduinoGraphics.h"
 #include "Arduino_LED_Matrix.h"
+#include <Servo.h>
 
 struct ResponseData {
   const char* firstRowText;
   const char* secondRowText;
   const boolean greenLedOn;
+  const boolean warningOn;
 
-  ResponseData(const char* firstRow, const char* secondRow, boolean greenOn)
-    : firstRowText(firstRow), secondRowText(secondRow), greenLedOn(greenOn) {}
+  ResponseData(const char* firstRow, const char* secondRow, boolean greenOn, boolean warningOn)
+    : firstRowText(firstRow), secondRowText(secondRow), greenLedOn(greenOn), warningOn(warningOn) {}
 };
 
 // Constants
-const int GATE_ID = 1;
+int GATE_ID = 1;
 const int ON = HIGH;
 const int OFF = LOW;
 const int RED_LED_PIN = A1;
@@ -27,11 +29,14 @@ const int SS_PIN = 10;
 const int RST_PIN = 9;
 const int BUZZER_PIN = A2;
 const int INFO_BUTTON_PIN = 2;
+const int GATE_SWITCH_BUTTON_PIN = 3;
+const int IR_BEAM_SWITCH = 7;
+const int SERVO_PIN = 6;
 
-const char* SERVER = "192.168.0.21";
-const int PORT_NO = 8080;
-const String LOGGING_ENDPOINT = String(GATE_ID) + "/?uid=";
-const String GET_LAST_LOG_ENDPOINT = String(GATE_ID) + "/lastLogInfo/?uid=";
+const char* SERVER = "192.168.231.228"; //"192.168.117.94";
+const int PORT_NO = 8081;
+String LOGGING_ENDPOINT = "/?uid=";
+String GET_LAST_LOG_ENDPOINT = "/lastLogInfo/?uid=";
 
 // Network credentials
 char ssid[] = SECRET_SSID;
@@ -44,6 +49,7 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 RTCTime currentTime;
 WiFiClient client;
 ArduinoLEDMatrix matrix;
+Servo myservo;
 
 
 void setup() {
@@ -58,9 +64,11 @@ void setup() {
 
 void loop() {
   printCurrentDateTime();
+  displayGateIdOnMatrix();
+  setCurrentGateId();
 
   if (isTagDetected()) {
-    if(isButtonPressed()){
+    if(isButtonPressed(INFO_BUTTON_PIN)){
       processTag(GET_LAST_LOG_ENDPOINT);
     }else {
       processTag(LOGGING_ENDPOINT);
@@ -68,7 +76,7 @@ void loop() {
 
   }
 
-  delay(1000);
+  delay(500);
 }
 
 void processTag(String endpoint) {
@@ -82,8 +90,10 @@ void processTag(String endpoint) {
   lcdScreenInfo1stRow(responseDataInfo.firstRowText);
   lcdScreenInfo2ndRow(responseDataInfo.secondRowText);
   ledsState(GREEN_LED_PIN, responseDataInfo.greenLedOn);
+  flashWarningSign(responseDataInfo.warningOn);
+  isGateOpen(responseDataInfo.greenLedOn);
 
-  delay(3000);
+  delay(4000);
   initialState();
 }
 
@@ -92,6 +102,8 @@ void initializeHardware() {
   pinMode(GREEN_LED_PIN, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(INFO_BUTTON_PIN, INPUT);
+  pinMode(GATE_SWITCH_BUTTON_PIN, INPUT);
+  pinMode(IR_BEAM_SWITCH, OUTPUT);
 
   lcd.init();
   lcd.backlight();
@@ -100,20 +112,23 @@ void initializeHardware() {
   mfrc522.PCD_Init();
   RTC.begin();
   matrix.begin();
+  myservo.attach(SERVO_PIN);
+  myservo.write(10);
 }
 
 void initialState() {
-  lcdScreenInfo1stRow("Scan your tag");
+  lcdScreenInfo1stRow("Scan your tag G" + String(GATE_ID));
   ledsState(RED_LED_PIN, ON);
   ledsState(GREEN_LED_PIN, OFF);
+  digitalWrite(IR_BEAM_SWITCH, LOW);
 }
 
 boolean isTagDetected() {
   return mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial();
 }
 
-boolean isButtonPressed(){
-  return digitalRead(INFO_BUTTON_PIN) == HIGH;
+boolean isButtonPressed(int button){
+  return digitalRead(button) == HIGH;
 }
 
 
@@ -217,7 +232,8 @@ void connectToWiFi() {
   }
 
   // Print WiFi status
-  printWifiStatus();
+    printWifiStatus();
+
 }
 
 void printWifiStatus() {
@@ -235,7 +251,7 @@ void printWifiStatus() {
 }
 
 String sendRequestToServer(String cardUid, String endpointName) {
-  String request = "GET /" + endpointName + cardUid + " HTTP/1.1";
+  String request = "GET /" + String(GATE_ID) + endpointName + cardUid + " HTTP/1.1";
 
   if (client.connect(SERVER, PORT_NO)) {
     Serial.println("Connected to server: " + String(SERVER));
@@ -276,6 +292,7 @@ ResponseData parseResponse(String response) {
   const char* firstRowText = doc["firstRowText"];
   const char* secondRowText = doc["secondRowText"];
   const boolean greenLedOn = doc["greenLedOn"];
+  const boolean warningOn = doc["warningOn"];
 
 
   if (firstRowText || secondRowText || greenLedOn) {
@@ -286,6 +303,8 @@ ResponseData parseResponse(String response) {
     Serial.println(secondRowText);
     Serial.print("Turn GREEN led on?: ");
     Serial.println(greenLedOn);
+    Serial.print("Warning sign on?: ");
+    Serial.println(warningOn);
 
   } else {
     Serial.println("All fields not found in JSON");
@@ -296,17 +315,17 @@ ResponseData parseResponse(String response) {
   if (error) {
     Serial.print("deserializeJson() failed: ");
     Serial.println(error.c_str());
-    return ResponseData("", "", false);
+    return ResponseData("Logging Failed.", "Try again.", false, false);
   }
 
-  return ResponseData(firstRowText, secondRowText, greenLedOn);
+  return ResponseData(firstRowText, secondRowText, greenLedOn, warningOn);
 }
 
 void weclomeMatrixText(){
   matrix.beginDraw();
 
-  matrix.stroke(0xFFFFFFFF);
-  matrix.textScrollSpeed(50);
+  //matrix.stroke(0xFFFFFFFF);
+  matrix.textScrollSpeed(60);
 
   // add the text
   const char text[] = "Welcome to Entry Systems";
@@ -319,3 +338,65 @@ void weclomeMatrixText(){
 
 }
 
+void displayGateIdOnMatrix() {
+  matrix.beginDraw();
+  matrix.clear();
+
+  matrix.stroke(0xFFFFFFFF);
+  matrix.textScrollSpeed(50);
+
+  // Create the message with the GATE_ID
+  String message = String(GATE_ID);
+
+  // Add the text to the matrix
+  matrix.textFont(Font_5x7);
+  matrix.beginText(3, 1, 0xFFFFFF);
+  matrix.print(message);
+  matrix.endText();
+
+  matrix.endDraw();
+}
+
+void flashWarningSign(boolean isOn){
+  if (isOn) {
+    for (int i = 0; i < 15; i++) {  // Loop to blink for 5 seconds
+      beeperOn(300);
+      matrix.loadFrame(LEDMATRIX_DANGER);
+      delay(200);
+      matrix.beginDraw();
+      matrix.clear();
+      matrix.endDraw();
+      delay(200);
+    }
+    digitalWrite(IR_BEAM_SWITCH, HIGH);
+    Serial.println("Security man initialized");
+    delay(3000);
+  }
+
+  }
+
+void isGateOpen(boolean shouldOpen){
+  int openingGateDurationMilis = 3000;
+
+  if(shouldOpen){
+    myservo.write(90);
+    delay(openingGateDurationMilis);
+    myservo.write(10);
+    ledsState(GREEN_LED_PIN, OFF);
+    ledsState(RED_LED_PIN, ON);
+
+    }
+
+  }
+
+
+void setCurrentGateId() {
+  if(isButtonPressed(GATE_SWITCH_BUTTON_PIN)) {
+    if(GATE_ID == 1){
+      GATE_ID = 2;
+      } else{
+        GATE_ID = 1;
+        }
+  initialState();
+  }
+  }
